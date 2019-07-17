@@ -120,7 +120,7 @@ show_kernel_init(void)
     return 1;
   tried_pcimap = 1;
 
-  if (name = opt_pcimap)
+  if ((name = opt_pcimap) != NULL)
     {
       f = fopen(name, "r");
       if (!f)
@@ -242,7 +242,7 @@ find_driver(struct device *d, char *buf)
     return "<name-too-long>";
   buf[n] = 0;
 
-  if (drv = strrchr(buf, '/'))
+  if ((drv = strrchr(buf, '/')) != NULL)
     return drv+1;
   else
     return buf;
@@ -273,7 +273,7 @@ show_kernel(struct device *d)
   char buf[DRIVER_BUF_SIZE];
   const char *driver, *module;
 
-  if (driver = find_driver(d, buf))
+  if ((driver = find_driver(d, buf)) != NULL)
     printf("\tKernel driver in use: %s\n", driver);
 
   if (!show_kernel_init())
@@ -292,7 +292,7 @@ show_kernel_machine(struct device *d)
   char buf[DRIVER_BUF_SIZE];
   const char *driver, *module;
 
-  if (driver = find_driver(d, buf))
+  if ((driver = find_driver(d, buf)) != NULL)
     printf("Driver:\t%s\n", driver);
 
   if (!show_kernel_init())
