@@ -24,7 +24,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE:= lspci
 LOCAL_MODULE_TAGS:= optional
 LOCAL_MODULE_PATH:= $(TARGET_OUT_OPTIONAL_EXECUTABLES)
-LOCAL_SRC_FILES:= lspci.c common.c ls-caps.c ls-ecaps.c ls-kernel.c ls-map.c ls-tree.c ls-vpd.c
+LOCAL_SRC_FILES:= lspci.c common.c ls-caps.c ls-ecaps.c ls-kernel.c ls-map.c ls-tree.c ls-vpd.c ls-caps-vendor.c 
 LOCAL_C_INCLUDES:= $(INCLUDES)
 LOCAL_STATIC_LIBRARIES:= libpci_static
 include $(BUILD_EXECUTABLE)
