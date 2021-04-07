@@ -751,6 +751,8 @@ static char *link_speed(int speed)
         return "16GT/s";
       case 5:
         return "32GT/s";
+      case 6:
+        return "64GT/s";
       default:
 	return "unknown";
     }
@@ -1085,8 +1087,8 @@ static void cap_express_dev2(struct device *d, int where, int type)
 
   l = get_conf_long(d, where + PCI_EXP_DEVCAP2);
   printf("\t\tDevCap2: Completion Timeout: %s, TimeoutDis%c NROPrPrP%c LTR%c",
-        cap_express_dev2_timeout_range(PCI_EXP_DEV2_TIMEOUT_RANGE(l)),
-        FLAG(l, PCI_EXP_DEV2_TIMEOUT_DIS),
+        cap_express_dev2_timeout_range(PCI_EXP_DEVCAP2_TIMEOUT_RANGE(l)),
+        FLAG(l, PCI_EXP_DEVCAP2_TIMEOUT_DIS),
 	FLAG(l, PCI_EXP_DEVCAP2_NROPRPRP),
         FLAG(l, PCI_EXP_DEVCAP2_LTR));
   printf("\n\t\t\t 10BitTagComp%c 10BitTagReq%c OBFF %s, ExtFmt%c EETLPPrefix%c",
@@ -1115,7 +1117,7 @@ static void cap_express_dev2(struct device *d, int where, int type)
     printf(" %s", cap_express_devcap2_tphcomp(PCI_EXP_DEVCAP2_TPH_COMP(l)));
 
   if (type == PCI_EXP_TYPE_ROOT_PORT || type == PCI_EXP_TYPE_DOWNSTREAM)
-    printf(" ARIFwd%c\n", FLAG(l, PCI_EXP_DEV2_ARI));
+    printf(" ARIFwd%c\n", FLAG(l, PCI_EXP_DEVCAP2_ARI));
   else
     printf("\n");
   if (type == PCI_EXP_TYPE_ROOT_PORT || type == PCI_EXP_TYPE_UPSTREAM ||
@@ -1134,13 +1136,14 @@ static void cap_express_dev2(struct device *d, int where, int type)
     }
 
   w = get_conf_word(d, where + PCI_EXP_DEVCTL2);
-  printf("\t\tDevCtl2: Completion Timeout: %s, TimeoutDis%c LTR%c OBFF %s,",
-	cap_express_dev2_timeout_value(PCI_EXP_DEV2_TIMEOUT_VALUE(w)),
-	FLAG(w, PCI_EXP_DEV2_TIMEOUT_DIS),
-	FLAG(w, PCI_EXP_DEV2_LTR),
-	cap_express_devctl2_obff(PCI_EXP_DEV2_OBFF(w)));
+  printf("\t\tDevCtl2: Completion Timeout: %s, TimeoutDis%c LTR%c 10BitTagReq%c OBFF %s,",
+	cap_express_dev2_timeout_value(PCI_EXP_DEVCTL2_TIMEOUT_VALUE(w)),
+	FLAG(w, PCI_EXP_DEVCTL2_TIMEOUT_DIS),
+	FLAG(w, PCI_EXP_DEVCTL2_LTR),
+	FLAG(w, PCI_EXP_DEVCTL2_10BIT_TAG_REQ),
+	cap_express_devctl2_obff(PCI_EXP_DEVCTL2_OBFF(w)));
   if (type == PCI_EXP_TYPE_ROOT_PORT || type == PCI_EXP_TYPE_DOWNSTREAM)
-    printf(" ARIFwd%c\n", FLAG(w, PCI_EXP_DEV2_ARI));
+    printf(" ARIFwd%c\n", FLAG(w, PCI_EXP_DEVCTL2_ARI));
   else
     printf("\n");
   if (type == PCI_EXP_TYPE_ROOT_PORT || type == PCI_EXP_TYPE_UPSTREAM ||
@@ -1150,10 +1153,10 @@ static void cap_express_dev2(struct device *d, int where, int type)
       printf("\t\t\t AtomicOpsCtl:");
       if (type == PCI_EXP_TYPE_ROOT_PORT || type == PCI_EXP_TYPE_ENDPOINT ||
           type == PCI_EXP_TYPE_ROOT_INT_EP || type == PCI_EXP_TYPE_LEG_END)
-        printf(" ReqEn%c", FLAG(w, PCI_EXP_DEV2_ATOMICOP_REQUESTER_EN));
+        printf(" ReqEn%c", FLAG(w, PCI_EXP_DEVCTL2_ATOMICOP_REQUESTER_EN));
       if (type == PCI_EXP_TYPE_ROOT_PORT || type == PCI_EXP_TYPE_UPSTREAM ||
           type == PCI_EXP_TYPE_DOWNSTREAM)
-        printf(" EgressBlck%c", FLAG(w, PCI_EXP_DEV2_ATOMICOP_EGRESS_BLOCK));
+        printf(" EgressBlck%c", FLAG(w, PCI_EXP_DEVCTL2_ATOMICOP_EGRESS_BLOCK));
       printf("\n");
     }
 }
@@ -1196,6 +1199,8 @@ static const char *cap_express_link2_speed(int type)
         return "16GT/s";
       case 5:
         return "32GT/s";
+      case 6:
+        return "64GT/s";
       default:
 	return "Unknown";
     }
